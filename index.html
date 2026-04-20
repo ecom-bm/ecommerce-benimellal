@@ -700,7 +700,7 @@ function checkout() {
   const lines = cart.map(x => `• ${x.name} x${x.qty} = ${x.price*x.qty} MAD`).join('%0A');
   const total = cart.reduce((s,x)=>s+x.price*x.qty,0);
   const msg = `Hello E-Co Béni Mellal! 👋%0A%0AI'd like to order:%0A${lines}%0A%0ATotal: ${total} MAD%0A%0APlease confirm. Thank you!`;
-  window.open(`https://wa.me/212600000000?text=${msg}`, '_blank');
+  window.open(`https://wa.me/212703588867?text=${msg}`, '_blank');
 }
 
 function showToast(msg) {
