@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>E-Co Béni Mellal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0b0e13;
+    --surface: #131720;
+    --surface2: #1a2030;
+    --accent: #00e5a0;
+    --accent2: #0099ff;
+    --text: #eef1f7;
+    --muted: #6b7a99;
+    --border: #1f2a3c;
+    --card: #141b28;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(11,14,19,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.4rem;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-right { display: flex; gap: 1rem; align-items: center; }
+  .cart-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 1.1rem;
+    border-radius: 99px; cursor: pointer;
+    font-size: 0.88rem; font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .cart-btn:hover { border-color: var(--accent); background: var(--surface); }
+  .cart-count {
+    background: var(--accent); color: #000;
+    font-weight: 700; font-size: 0.75rem;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,229,160,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,153,255,0.10) 0%, transparent 70%);
+    top: 20%; right: 10%;
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(0,229,160,0.1);
+    border: 1px solid rgba(0,229,160,0.3);
+    color: var(--accent);
+    padding: 0.35rem 1rem;
+    border-radius: 99px; font-size: 0.8rem; font-weight: 500;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -2px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 .line2 { color: var(--accent); }
+  .hero p {
+    max-width: 520px; margin: 1.5rem auto 0;
+    color: var(--muted); font-size: 1.1rem; line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; margin-top: 2.5rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+    font-weight: 700; font-size: 0.95rem;
+    padding: 0.85rem 2rem; border-radius: 99px;
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(0,229,160,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(0,229,160,0.45); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    font-weight: 500; font-size: 0.95rem;
+    padding: 0.85rem 2rem; border-radius: 99px;
+    border: 1px solid var(--border); cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--muted); background: var(--surface); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem; font-weight: 800; color: var(--text);
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* SECTION TITLES */
+  .section-label {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800; letter-spacing: -1px;
+  }
+  .section-title span { color: var(--accent); }
+
+  /* CATEGORIES */
+  .categories { padding: 5rem 2.5rem; max-width: 1200px; margin: 0 auto; }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem; margin-top: 2.5rem;
+  }
+  .cat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .cat-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--surface2); }
+  .cat-card.active { border-color: var(--accent); background: rgba(0,229,160,0.07); }
+  .cat-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
+  .cat-name { font-weight: 600; font-size: 0.9rem; }
+  .cat-count { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+
+  /* PRODUCTS */
+  .products-section { padding: 1rem 2.5rem 5rem; max-width: 1200px; margin: 0 auto; }
+  .products-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .sort-select {
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    cursor: pointer; outline: none;
+  }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+    animation: fadeUp 0.5s ease both;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0,229,160,0.4);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .product-img {
+    width: 100%; aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    background: var(--surface2);
+    position: relative; overflow: hidden;
+  }
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--accent); color: #000;
+    font-size: 0.7rem; font-weight: 700;
+    padding: 0.3rem 0.7rem; border-radius: 99px;
+  }
+  .product-badge.sale { background: #ff4d6d; color: #fff; }
+  .product-info { padding: 1.2rem; }
+  .product-category { font-size: 0.75rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+  .product-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin: 0.3rem 0 0.5rem; }
+  .product-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .product-price { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; }
+  .product-price .old-price { font-size: 0.8rem; color: var(--muted); text-decoration: line-through; font-weight: 400; margin-right: 0.4rem; }
+  .add-to-cart {
+    background: var(--accent); color: #000;
+    border: none; border-radius: 99px;
+    padding: 0.5rem 1.1rem; font-size: 0.82rem; font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .add-to-cart:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,229,160,0.4); }
+
+  /* FEATURES */
+  .features {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 2.5rem;
+  }
+  .features-inner { max-width: 1200px; margin: 0 auto; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem; margin-top: 3rem;
+  }
+  .feature-item { display: flex; gap: 1rem; align-items: flex-start; }
+  .feature-icon {
+    width: 46px; height: 46px; border-radius: 12px;
+    background: rgba(0,229,160,0.1);
+    border: 1px solid rgba(0,229,160,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .feature-text h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .feature-text p { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+
+  /* CART PANEL */
+  .cart-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+  .cart-panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(420px, 100vw);
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 201;
+    transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+  }
+  .cart-panel.open { transform: translateX(0); }
+  .cart-header {
+    padding: 1.5rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-header h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; }
+  .close-cart {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .close-cart:hover { background: var(--border); }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .cart-empty { text-align: center; color: var(--muted); margin: auto; font-size: 0.9rem; }
+  .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .cart-item {
+    display: flex; gap: 1rem; align-items: center;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.9rem;
+  }
+  .cart-item-img { font-size: 2rem; width: 50px; text-align: center; flex-shrink: 0; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-weight: 600; font-size: 0.88rem; }
+  .cart-item-price { color: var(--accent); font-size: 0.85rem; font-weight: 700; margin-top: 0.2rem; }
+  .cart-item-remove {
+    background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem;
+    transition: color 0.2s;
+  }
+  .cart-item-remove:hover { color: #ff4d6d; }
+  .cart-footer { padding: 1.5rem; border-top: 1px solid var(--border); }
+  .cart-total { display: flex; justify-content: space-between; margin-bottom: 1.2rem; font-size: 1rem; font-weight: 600; }
+  .cart-total span:last-child { color: var(--accent); font-family: 'Syne', sans-serif; font-size: 1.3rem; }
+  .checkout-btn {
+    width: 100%; background: var(--accent); color: #000;
+    border: none; border-radius: 12px; padding: 1rem;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+    cursor: pointer; transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .checkout-btn:hover { box-shadow: 0 0 30px rgba(0,229,160,0.4); transform: translateY(-1px); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 300; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 1rem;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 24px; max-width: 520px; width: 100%;
+    padding: 2rem; transform: scale(0.95);
+    transition: transform 0.3s; max-height: 90vh; overflow-y: auto;
+  }
+  .modal-overlay.open .modal { transform: scale(1); }
+  .modal-img { font-size: 6rem; text-align: center; background: var(--surface2); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+  .modal-category { font-size: 0.75rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+  .modal-name { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; margin: 0.3rem 0 0.7rem; }
+  .modal-desc { color: var(--muted); line-height: 1.7; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .modal-price { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 1.5rem; }
+  .modal-actions { display: flex; gap: 1rem; }
+  .modal-add { flex: 1; background: var(--accent); color: #000; border: none; border-radius: 12px; padding: 1rem; font-weight: 700; font-size: 0.95rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: box-shadow 0.2s; }
+  .modal-add:hover { box-shadow: 0 0 25px rgba(0,229,160,0.4); }
+  .modal-close-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.5rem; font-weight: 600; font-size: 0.9rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .modal-close-btn:hover { background: var(--border); }
+
+  /* CONTACT */
+  .contact-section { padding: 5rem 2.5rem; max-width: 700px; margin: 0 auto; text-align: center; }
+  .contact-grid { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center; }
+  .contact-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.5rem 2rem; flex: 1; min-width: 180px;
+    transition: border-color 0.2s;
+  }
+  .contact-card:hover { border-color: var(--accent); }
+  .contact-card .icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .contact-card h4 { font-weight: 600; font-size: 0.9rem; }
+  .contact-card p { font-size: 0.82rem; color: var(--muted); margin-top: 0.3rem; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    color: var(--muted); font-size: 0.83rem;
+  }
+  footer .logo { font-size: 1.1rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--accent); color: #000;
+    padding: 0.8rem 1.8rem; border-radius: 99px;
+    font-weight: 700; font-size: 0.88rem;
+    z-index: 500; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-links { display: none; }
+    .hero { min-height: 70vh; }
+    .hero-stats { gap: 1.5rem; }
+    .categories, .products-section { padding-left: 1.2rem; padding-right: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">E-Co <span>Béni Mellal</span></div>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#features">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Cart <div class="cart-count" id="cartCount">0</div>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-badge">⚡ Electronics Store — Béni Mellal</div>
+  <h1>Sound. Tech.<br/><span class="line2">Delivered.</span></h1>
+  <p>Premium audio gear and cutting-edge electronics. Handpicked quality, trusted service, right here in Béni Mellal.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
+    <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Us</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">50<span>+</span></div><div class="stat-label">Products</div></div>
+    <div class="stat"><div class="stat-num">100<span>%</span></div><div class="stat-label">Authentic</div></div>
+    <div class="stat"><div class="stat-num">24<span>h</span></div><div class="stat-label">Delivery</div></div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="section-label">Browse</div>
+  <div class="section-title">Shop by <span>Category</span></div>
+  <div class="cat-grid" id="catGrid"></div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+  <div class="products-header">
+    <div>
+      <div class="section-label">Collection</div>
+      <div class="section-title">Our <span>Products</span></div>
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="renderProducts()">
+      <option value="default">Sort: Default</option>
+      <option value="low">Price: Low → High</option>
+      <option value="high">Price: High → Low</option>
+    </select>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="section-label">Why Choose Us</div>
+    <div class="section-title">Your Trust, <span>Our Priority</span></div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🚚</div>
+        <div class="feature-text"><h4>Fast Delivery</h4><p>Same-day or next-day delivery within Béni Mellal and nearby areas.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">✅</div>
+        <div class="feature-text"><h4>100% Authentic</h4><p>All products are genuine and come with full warranty support.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <div class="feature-text"><h4>Expert Advice</h4><p>Not sure what to buy? Chat with us — we'll guide you to the right product.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔄</div>
+        <div class="feature-text"><h4>Easy Returns</h4><p>7-day return policy. No questions asked if you're not satisfied.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-label">Get In Touch</div>
+  <div class="section-title">Contact <span>E-Co</span></div>
+  <p style="color:var(--muted);margin-top:0.8rem;font-size:0.95rem">Have a question or want to place an order? Reach out to us!</p>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="icon">📞</div>
+      <h4>Phone / WhatsApp</h4>
+      <p>+212 600 000 000</p>
+    </div>
+    <div class="contact-card">
+      <div class="icon">📍</div>
+      <h4>Location</h4>
+      <p>Béni Mellal, Morocco</p>
+    </div>
+    <div class="contact-card">
+      <div class="icon">🕐</div>
+      <h4>Hours</h4>
+      <p>Mon–Sat: 9am – 8pm</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">E-Co <span style="color:var(--accent)">Béni Mellal</span></div>
+  <span>© 2026 E-Co Béni Mellal. All rights reserved.</span>
+</footer>
+
+<!-- CART PANEL -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h3>🛒 Your Cart</h3>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">0 MAD</span></div>
+    <button class="checkout-btn" onclick="checkout()">Confirm Order via WhatsApp →</button>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="productModal"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const products = [
+  { id:1, name:"Sony WH-1000XM5", category:"Headphones", emoji:"🎧", price:2499, oldPrice:2899, desc:"Industry-leading noise cancellation with crystal-clear audio. 30h battery life.", badge:"Popular" },
+  { id:2, name:"JBL Charge 5", category:"Speakers", emoji:"🔊", price:1299, oldPrice:null, desc:"Portable waterproof speaker with powerful sound and 20h playtime.", badge:null },
+  { id:3, name:"Apple AirPods Pro", category:"Earbuds", emoji:"🎵", price:1899, oldPrice:2199, desc:"Active noise cancellation and transparency mode in a compact design.", badge:"Sale" },
+  { id:4, name:"Samsung Galaxy Buds2", category:"Earbuds", emoji:"🎶", price:899, oldPrice:null, desc:"Lightweight earbuds with 3-mic system and ANC for clear calls.", badge:null },
+  { id:5, name:"Logitech MX Keys", category:"Keyboards", emoji:"⌨️", price:1099, oldPrice:null, desc:"Advanced wireless keyboard with smart backlighting and multi-device support.", badge:null },
+  { id:6, name:"Anker PowerBank 26800", category:"Power Banks", emoji:"🔋", price:649, oldPrice:799, desc:"High-capacity 26800mAh power bank with 3 USB ports and fast charge.", badge:"Sale" },
+  { id:7, name:"HDMI 4K Cable 2m", category:"Cables", emoji:"🔌", price:129, oldPrice:null, desc:"High-speed 4K HDMI cable, compatible with all modern TVs and monitors.", badge:null },
+  { id:8, name:"USB-C Hub 7-in-1", category:"Accessories", emoji:"🖥️", price:449, oldPrice:549, desc:"7-in-1 USB-C hub with HDMI, USB 3.0, SD card, and PD charging port.", badge:"New" },
+];
+
+const categories = [
+  { name:"All", icon:"⚡" },
+  { name:"Headphones", icon:"🎧" },
+  { name:"Speakers", icon:"🔊" },
+  { name:"Earbuds", icon:"🎵" },
+  { name:"Keyboards", icon:"⌨️" },
+  { name:"Power Banks", icon:"🔋" },
+  { name:"Accessories", icon:"🖥️" },
+];
+
+let activeCategory = "All";
+let cart = [];
+
+function renderCategories() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = categories.map(c => `
+    <div class="cat-card ${activeCategory === c.name ? 'active' : ''}" onclick="setCategory('${c.name}')">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.name === 'All' ? products.length : products.filter(p=>p.category===c.name).length} items</div>
+    </div>
+  `).join('');
+}
+
+function setCategory(name) {
+  activeCategory = name;
+  renderCategories();
+  renderProducts();
+}
+
+function renderProducts() {
+  const sort = document.getElementById('sortSelect').value;
+  let filtered = activeCategory === 'All' ? [...products] : products.filter(p => p.category === activeCategory);
+  if (sort === 'low') filtered.sort((a,b) => a.price - b.price);
+  if (sort === 'high') filtered.sort((a,b) => b.price - a.price);
+
+  const grid = document.getElementById('productsGrid');
+  if (!filtered.length) {
+    grid.innerHTML = `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:3rem">No products in this category yet.</p>`;
+    return;
+  }
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="product-card" style="animation-delay:${i*0.05}s" onclick="openModal(${p.id})">
+      <div class="product-img">
+        ${p.badge ? `<div class="product-badge ${p.badge==='Sale'?'sale':''}">${p.badge}</div>` : ''}
+        ${p.emoji}
+      </div>
+      <div class="product-info">
+        <div class="product-category">${p.category}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">
+            ${p.oldPrice ? `<span class="old-price">${p.oldPrice} MAD</span>` : ''}
+            ${p.price} MAD
+          </div>
+          <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${p.id})">+ Add</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  const existing = cart.find(x => x.id === id);
+  if (existing) existing.qty++;
+  else cart.push({ ...p, qty: 1 });
+  updateCartUI();
+  showToast(`✅ ${p.name} added to cart!`);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+  document.getElementById('cartCount').textContent = cart.reduce((s,x)=>s+x.qty,0);
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+
+  if (!cart.length) {
+    itemsEl.innerHTML = `<div class="cart-empty"><span class="empty-icon">🛒</span>Your cart is empty.<br>Add some products!</div>`;
+    footerEl.style.display = 'none';
+  } else {
+    itemsEl.innerHTML = cart.map(x => `
+      <div class="cart-item">
+        <div class="cart-item-img">${x.emoji}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${x.name} ${x.qty > 1 ? `×${x.qty}`:''}</div>
+          <div class="cart-item-price">${x.price * x.qty} MAD</div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart(${x.id})">✕</button>
+      </div>
+    `).join('');
+    footerEl.style.display = 'block';
+    document.getElementById('cartTotal').textContent = `${total} MAD`;
+  }
+}
+
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartPanel').classList.add('open');
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartPanel').classList.remove('open');
+}
+
+function openModal(id) {
+  const p = products.find(x => x.id === id);
+  document.getElementById('productModal').innerHTML = `
+    <div class="modal-img">${p.emoji}</div>
+    <div class="modal-category">${p.category}</div>
+    <div class="modal-name">${p.name}</div>
+    <div class="modal-desc">${p.desc}</div>
+    <div class="modal-price">${p.price} MAD ${p.oldPrice ? `<span style="font-size:1rem;color:var(--muted);text-decoration:line-through;font-weight:400">${p.oldPrice} MAD</span>` : ''}</div>
+    <div class="modal-actions">
+      <button class="modal-add" onclick="addToCart(${p.id}); closeModal()">🛒 Add to Cart</button>
+      <button class="modal-close-btn" onclick="closeModal()">Close</button>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+function checkout() {
+  if (!cart.length) return;
+  const lines = cart.map(x => `• ${x.name} x${x.qty} = ${x.price*x.qty} MAD`).join('%0A');
+  const total = cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const msg = `Hello E-Co Béni Mellal! 👋%0A%0AI'd like to order:%0A${lines}%0A%0ATotal: ${total} MAD%0A%0APlease confirm. Thank you!`;
+  window.open(`https://wa.me/212600000000?text=${msg}`, '_blank');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Init
+renderCategories();
+renderProducts();
+updateCartUI();
+</script>
+</body>
+</html>
